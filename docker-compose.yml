@@ -1,0 +1,24 @@
+services:
+  inspiration-bot:
+    image: python:3.13
+    container_name: inspiration-bot
+    restart: unless-stopped
+    tty: true
+    user: "1000:1000"
+    working_dir: /var/www
+    environment:
+      - HOME=/tmp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    command: sh -c "pip install --no-cache-dir --user -r requirements.txt && python3 bot.py"
+    volumes:
+      - ./www:/var/www
+    networks:
+      - bot-network
+
+# DOCKER Networks
+networks:
+  bot-network:
+    name: bot-network
+    driver: bridge
